@@ -160,16 +160,23 @@ function is_pvc_in_target_list() {
         return 0  # Si no hay lista, procesar todos
     fi
     
+    # Limpiar comillas dobles de la target_list
+    target_list=$(echo "$target_list" | tr -d '"')
+    
+    log_info "DEBUG: Checking PVC '$pvc_name' against cleaned target list: '$target_list'"
+    
     # Convertir lista separada por comas/espacios en array
-    local IFS=', '
-    local target_array=($target_list)
+    IFS=', ' read -ra target_array <<< "$target_list"
     
     for target_pvc in "${target_array[@]}"; do
+        log_info "DEBUG: Comparing '$pvc_name' with target '$target_pvc'"
         if [[ "$pvc_name" == *"$target_pvc"* ]]; then
+            log_info "DEBUG: ✓ Match found!"
             return 0  # PVC encontrado en la lista
         fi
     done
     
+    log_info "DEBUG: ✗ No match found"
     return 1  # PVC no encontrado en la lista
 }
 

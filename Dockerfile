@@ -12,9 +12,10 @@ WORKDIR /app
 
 # Update, Install packages and clean cache update
 RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
-    apt-transport-https \ 
-    ca-certificates \ 
-    curl \ 
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    jq \
     openssh-client \
     && rm -rf /var/www/html \
     && rm -rf /var/lib/apt/lists/*
