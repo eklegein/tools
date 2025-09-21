@@ -1,0 +1,25 @@
+# Archivo: .github/workflows/build-docker-release.yaml
+# Repositorio: El que llama al workflow compartido
+
+name: Build release Docker image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "main"
+      # - "devel"  # Descomenta si quieres usar devel
+
+jobs:
+  build_docker:
+    uses: eklegein/shared-workflow/.github/workflows/build-backend.yaml@main
+    with:
+      docker_image_name: "snapshot-tool"
+      release_version: "0.0.1"
+      docker_registry_url: "eklegein"
+      dockerfile_path: "Dockerfile"
+      runner_labels: '["ubuntu-latest"]'
+      enable_devel_branch: false # Cambia a true si quieres soporte para devel
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
